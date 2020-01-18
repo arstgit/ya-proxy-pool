@@ -1,0 +1,32 @@
+{
+  "name": "ya-proxy-pool",
+  "version": "0.0.0",
+  "description": "Yet another proxy pool implementation.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "prettier": "prettier --write --no-semi --single-quote src/*.js",
+    "up": "docker-compose up --build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derekchuank/ya-proxy-pool.git"
+  },
+  "keywords": [
+    "ip",
+    "proxy",
+    "pool"
+  ],
+  "author": "Derekchuank",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/derekchuank/ya-proxy-pool/issues"
+  },
+  "homepage": "https://github.com/derekchuank/ya-proxy-pool#readme",
+  "dependencies": {
+    "redis": "^2.8.0",
+    "request": "^2.88.0",
+    "ya-config-loader": "^1.0.0"
+  }
+}

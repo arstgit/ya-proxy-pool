@@ -1,0 +1,11 @@
+{
+  "NAME": "ya-proxy-pool",
+  "REDIS": {
+    "host": "redis",
+    "port": "6379"
+  },
+  "TEST_TARGET": "http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js",
+  "SPIDER_INTERVAL": 30000,
+  "SCOUR_INTERVAL": 2000,
+  "IP_IDLE_INTERVAL": 10000
+}
