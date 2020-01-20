@@ -8,14 +8,18 @@ let schedule = {}
 module.exports = schedule
 
 schedule.up = function() {
+  showNum()
   spider.up()
+
   setInterval(spider.up, config.SPIDER_INTERVAL)
   setInterval(scour.up, config.SCOUR_INTERVAL)
+
   setInterval(showNum, 5000)
 }
 
 function showNum() {
   db.zcard([], function(err, response) {
+    if (err) throw err
     console.log('Avaliable ip number: ' + response)
   })
 }

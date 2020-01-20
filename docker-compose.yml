@@ -6,4 +6,6 @@ services:
     - redis
   redis:
     image: "redis:alpine"
+    volumes:
+    - "./data:/data"
 

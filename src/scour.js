@@ -31,7 +31,7 @@ function test(member, testCb) {
       url: config.TEST_TARGET,
       proxy: 'http://' + member,
       method: 'GET',
-      timeout: 2000,
+      timeout: config.IP_TIMEOUT,
       headers
     },
     function(err, response, body) {

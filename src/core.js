@@ -31,65 +31,55 @@ core.addrFnMap = {
   // "http://www.89ip.cn/index_2.html": { enabled: true, fn: fn1 }
 }
 
-function fnHelper(addr, process) {
-  request(addr, function(error, response, body) {
-    if (error) {
-      console.error('error:', error)
-      cb(error, null)
-    } else {
-      process(body)
-    }
+function fnHelper(addr, proxyAddr, process) {
+  let options = {
+    url: addr,
+    method: 'GET'
+  }
+  if (proxyAddr) {
+    options.proxy = 'http://' + proxyAddr
+  }
+  request(options, function(err, response, body) {
+    process(err, body)
   })
 }
 
-function fn1(addr, cb) {
+function fn1(addr, proxyAddr, cb) {
   let result = []
   let regex = /((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])<[^\d]+>\d{4,5}/g
 
-  fnHelper(addr, process)
+  fnHelper(addr, proxyAddr, process)
 
-  function process(body) {
+  function process(err, body) {
+    if (err) {
+      cb(err)
+      return
+    }
     let found = body.match(regex)
     if (found !== null) {
       result = found.map(str => str.replace(/<[^\d]+>/, ':'))
     }
 
-    cb(null, result)
+    cb(null, result, addr)
   }
 }
 
-// to do
-function fn3(addr, cb) {
-  let result = []
-  //let regex = /((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]):\d{4,5}/g
-  // (?:(<.*?>))?
-  //let regex = /((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}/g
-  let regex = /((2(?:(<.*?>))?5(?:(<.*?>))?[0-5](?:(<.*?>))?|2(?:(<.*?>))?[0-4](?:(<.*?>))?[0-9](?:(<.*?>))?|1((?:(<.*?>))?[0-9](?:(<.*?>))?){2}|([1-9](?:(<.*?>))?)?[0-9])\.){3}/g
-
-  fnHelper(addr, process)
-
-  function process(body) {
-    let found = body.match(regex)
-    if (found !== null) {
-      result = found
-    }
-
-    cb(null, result)
-  }
-}
-
-function fn4(addr, cb) {
+function fn4(addr, proxyAddr, cb) {
   let result = []
   let regex = /((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]):\d{4,5}/g
 
-  fnHelper(addr, process)
+  fnHelper(addr, proxyAddr, process)
 
-  function process(body) {
+  function process(err, body) {
+    if (err) {
+      cb(err)
+      return
+    }
     let found = body.match(regex)
     if (found !== null) {
       result = found
     }
 
-    cb(null, result)
+    cb(null, result, addr)
   }
 }

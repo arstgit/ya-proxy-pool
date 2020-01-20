@@ -35,6 +35,14 @@ db.zpopmin = function(args, cb) {
   })
 }
 
+db.zpopmax = function(args, cb) {
+  args.unshift(prefix)
+  client.zpopmax(args, function(err, response) {
+    if (err) throw err
+    cb(err, response)
+  })
+}
+
 db.zrem = function(args, cb) {
   args.unshift(prefix)
   client.zrem(args, function(err, response) {
