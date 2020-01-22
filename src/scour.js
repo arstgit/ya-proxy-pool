@@ -64,7 +64,6 @@ async function test(member, testCb) {
 function testCb(err, member, passed) {
   if (passed === true) {
     let args = [Date.now(), member]
-    console.log(args)
     db.zadd(args, util.printDbCb)
   }
 }
