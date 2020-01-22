@@ -1,3 +1,4 @@
+let util = require('util')
 let redis = require('redis')
 let config = require('ya-config-loader')
 
@@ -57,4 +58,8 @@ db.zcard = function(args, cb) {
     if (err) throw err
     cb(err, response)
   })
+}
+
+for (let key of Object.keys(db)) {
+  db[key + 'Async'] = util.promisify(db[key]).bind(client)
 }

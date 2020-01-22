@@ -9,6 +9,7 @@ module.exports = schedule
 
 schedule.up = function() {
   showNum()
+
   spider.up()
 
   setInterval(spider.up, config.SPIDER_INTERVAL)
@@ -17,9 +18,7 @@ schedule.up = function() {
   setInterval(showNum, 5000)
 }
 
-function showNum() {
-  db.zcard([], function(err, response) {
-    if (err) throw err
-    console.log('Avaliable ip number: ' + response)
-  })
+async function showNum() {
+  let num = await db.zcardAsync([])
+  console.log('Avaliable ip number: ' + num)
 }

@@ -23,26 +23,6 @@ function validateIps(ipArr) {
   }
   return true
 }
-function getOneProxyCb(err, response) {
-  // response: 60.167.23.231:8118,0
-
-  let member
-  let score
-  if (response.length === 2) {
-    member = response[0]
-    score = response[1]
-    db.zadd([score, member], util.printDbCb)
-  }
-  for (let [addr, { enabled, fn }] of Object.entries(core.addrFnMap)) {
-    if (enabled === true) {
-      fn(addr, member, coreCb)
-    }
-  }
-}
-
-function getOneProxy() {
-  db.zpopmax([], getOneProxyCb)
-}
 
 function prepareNext() {
   let arr = Object.entries(core.addrFnMap)
@@ -90,10 +70,24 @@ function coreCb(error, result, addr) {
   }
 }
 
-spider.up = function() {
+spider.up = async function() {
   if (running == true) return
   running = true
 
-  getOneProxy(getOneProxyCb)
+  let response = await db.zpopmaxAsync([])
+  // response: 60.167.23.231:8118,0
+  let member
+  if (response.length === 2) {
+    member = response[0]
+    let score = response[1]
+    await db.zaddAsync([score, member])
+  }
+
+  for (let [addr, { enabled, fn }] of Object.entries(core.addrFnMap)) {
+    if (enabled === true) {
+      fn(addr, member, coreCb)
+    }
+  }
+
   running = false
 }
